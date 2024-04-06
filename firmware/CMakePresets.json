@@ -1,0 +1,20 @@
+{
+    "version": 5,
+    "configurePresets": [
+        {
+            "name": "arm_none_eabi_gcc",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/../firmware-build",
+            "toolchainFile": "${sourceDir}/arm_none_eabi_gcc.cmake",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "arm_none_eabi_gcc",
+            "configurePreset": "arm_none_eabi_gcc"
+        }
+    ]
+}
