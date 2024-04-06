@@ -2,19 +2,58 @@
     "version": 5,
     "configurePresets": [
         {
-            "name": "arm_none_eabi_gcc",
+            "name": "Debug",
             "generator": "Ninja",
-            "binaryDir": "${sourceDir}/../firmware-build",
+            "binaryDir": "${sourceDir}/../firmware-build-debug",
             "toolchainFile": "${sourceDir}/arm_none_eabi_gcc.cmake",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "MinSizeRel",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/../firmware-build-minsizerel",
+            "toolchainFile": "${sourceDir}/arm_none_eabi_gcc.cmake",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "MinSizeRel"
+            }
+        },
+        {
+            "name": "Release",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/../firmware-build-release",
+            "toolchainFile": "${sourceDir}/arm_none_eabi_gcc.cmake",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "RelWithDebInfo",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/../firmware-build-relwithdebinfo",
+            "toolchainFile": "${sourceDir}/arm_none_eabi_gcc.cmake",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
             }
         }
     ],
     "buildPresets": [
         {
-            "name": "arm_none_eabi_gcc",
-            "configurePreset": "arm_none_eabi_gcc"
+            "name": "Debug",
+            "configurePreset": "Debug"
+        },
+        {
+            "name": "MinSizeRel",
+            "configurePreset": "MinSizeRel"
+        },
+        {
+            "name": "Release",
+            "configurePreset": "Release"
+        },
+        {
+            "name": "RelWithDebInfo",
+            "configurePreset": "RelWithDebInfo"
         }
     ]
 }

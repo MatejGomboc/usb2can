@@ -1,5 +1,8 @@
 /hardware/__Previews
 /hardware/History
 /hardware/Project Logs for usb2can
-/firmware-build
+/firmware-build-debug
+/firmware-build-minsizerel
+/firmware-build-release
+/firmware-build-relwithdebinfo
 /.vscode
