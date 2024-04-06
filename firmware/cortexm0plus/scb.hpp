@@ -12,7 +12,7 @@ namespace CortexM0Plus::Scb {
             uint32_t part_no: 12; //!< part number of the processor (0xC60: Cortex-M0+)
             uint32_t constant: 4; //!< constant that defines the architecture of the processor (0xC: ARMv6-M architecture)
             uint32_t variant: 4; //!< variant number: the r value in the Rnpn product revision identifier (0x0: revision 0)
-            uint32_t implementer: 4; //!< implementer code (0x41: ARM)
+            uint32_t implementer: 8; //!< implementer code (0x41: ARM)
         } bits;
 
         uint32_t value = 0;
@@ -30,19 +30,17 @@ namespace CortexM0Plus::Scb {
         struct Bits {
             uint32_t active_exception: 9; //!< exception number of the currently active exception
             uint32_t reserved0: 3;
-            uint32_t vect_pending: 9;
+            uint32_t pending_exception: 9; //!< exception number of the highest priority pending enabled exception
             uint32_t reserved1: 1;
-
-
-            uint32_t isr_pending: 1;
-            uint32_t isr_preempt: 1;
+            uint32_t irq_is_pending: 1; //!< true if an external configurable, NVIC generated, interrupt is pending
+            uint32_t exception_is_pending: 1; //!< true if a pending exception is serviced on exit from debug halt state
             uint32_t reserved2: 1;
-            uint32_t pend_sys_tick_clr: 1; //!< removes the pending state from the SysTick exception
-            uint32_t pend_sys_tick_set: 1; //!< changes SysTick exception state to pending
-            uint32_t pend_sv_clr: 1; //!< removes the pending state from the PendSV exception
-            uint32_t pend_sv_set: 1; //!< change PendSV exception state to pending
+            uint32_t pending_sys_tick_clear: 1; //!< removes the pending state from the SysTick exception
+            uint32_t pending_sys_tick_set: 1; //!< changes SysTick exception state to pending
+            uint32_t pending_sv_clear: 1; //!< removes the pending state from the PendSV exception
+            uint32_t pending_sv_set: 1; //!< change PendSV exception state to pending
             uint32_t reserved3: 2;
-            uint32_t nmi_pend_set: 1; //!< changes NMI exception state to pending
+            uint32_t nmi_pending_set: 1; //!< changes NMI exception state to pending
         } bits;
 
         uint32_t value = 0;
@@ -63,7 +61,7 @@ namespace CortexM0Plus::Scb {
             uint32_t reserved0: 1;
             uint32_t vect_clr_active: 1; //!< reserved, write '0' to this bit
             uint32_t sys_reset_req: 1; //!< requests a system reset
-            uint32_t reserved1: 11;
+            uint32_t reserved1: 12;
             uint32_t endianess: 1; //!< reads as 0 - little endian
             uint32_t vect_key: 16; //!< on writes, VECT_KEY to this field, otherwise the write is ignored
         } bits;
@@ -90,7 +88,7 @@ namespace CortexM0Plus::Scb {
             //! 1: enabled events and all exceptions, including disabled exceptions, can wakeup the processor
             uint32_t send_event_on_except_pending: 1;
 
-            uint32_t reserved2: 28;
+            uint32_t reserved2: 27;
         } bits;
 
         uint32_t value = 0;
@@ -110,7 +108,7 @@ namespace CortexM0Plus::Scb {
             uint32_t fault_on_unaligned_access: 1; //!< always '1', indicates that all unaligned accesses generate a HardFault
             uint32_t reserved1: 4;
             uint32_t stack_alignment: 1; //!< always '1', indicates 8-byte stack alignment on exception entry
-            uint32_t reserved2: 22;
+            uint32_t reserved2: 23;
         } bits;
 
         uint32_t value = 0;
@@ -162,7 +160,7 @@ namespace CortexM0Plus::Scb {
     {
         volatile uint32_t cpuid; //!< contains the processor part number, version, and implementation information
         volatile uint32_t icsr; //!< interrupt control and state register
-        volatile uint32_t reserved0;
+        volatile uint32_t vtor; //!< vector table offset register
         volatile uint32_t aircr; //!< enables system reset
         volatile uint32_t scr; //!< controls features of entry to and exit from low power state
         volatile uint32_t ccr; //!< is a read-only register and indicates some aspects of the behavior of the processor
