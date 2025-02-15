@@ -1,8 +1,19 @@
-cmake_minimum_required(VERSION 3.24.2)
+cmake_minimum_required(VERSION 3.16)
 
 project(motor_driver LANGUAGES ASM CXX)
 
+if(NOT CMAKE_BUILD_TYPE)
+    message(FATAL_ERROR "Build type not set")
+endif()
+
+set(SUPPORTED_BUILD_TYPES Debug Release RelWithDebInfo MinSizeRel)
+
+if(NOT CMAKE_BUILD_TYPE IN_LIST SUPPORTED_BUILD_TYPES)
+    message(FATAL_ERROR "Unsupported build type: ${CMAKE_BUILD_TYPE}")
+endif()
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_executable(${PROJECT_NAME}
     main.cpp
@@ -90,14 +101,9 @@ add_custom_target(${PROJECT_NAME}_asm
     DEPENDS ${PROJECT_NAME}.elf
 )
 
-add_dependencies(${PROJECT_NAME}_size_report
-    ${PROJECT_NAME}
-)
-
-add_dependencies(${PROJECT_NAME}_bin
-    ${PROJECT_NAME}
-)
-
-add_dependencies(${PROJECT_NAME}_asm
+add_dependencies(
+    ${PROJECT_NAME}_size_report
+    ${PROJECT_NAME}_bin
+    ${PROJECT_NAME}_asm
     ${PROJECT_NAME}
 )
