@@ -25,4 +25,10 @@ namespace CortexM0Plus {
     {
         asm volatile("cpsid i" : : : "memory");
     }
+
+    static inline bool isIrqNumber(ExceptionNumber exception)
+    {
+        return (static_cast<uint8_t>(exception) >= static_cast<uint8_t>(ExceptionNumber::FIRST_IRQ) &&
+            static_cast<uint8_t>(exception) <= static_cast<uint8_t>(ExceptionNumber::LAST_IRQ));
+    }
 }
