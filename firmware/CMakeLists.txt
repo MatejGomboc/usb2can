@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.24.2)
 
-project(motor_driver LANGUAGES ASM C CXX)
+project(motor_driver LANGUAGES ASM CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -26,25 +26,6 @@ target_compile_options(${PROJECT_NAME} PRIVATE
         -masm-syntax-unified
     >
 
-    $<$<COMPILE_LANGUAGE:C>:
-        -mcpu=cortex-m0plus
-        -std=gnu18
-        -ffunction-sections
-        -fdata-sections
-        -Wall
-        -Wextra
-        -pedantic
-        -Wmissing-include-dirs
-        -Wswitch-enum
-        -Wconversion
-        -fstack-usage
-        -nostdlib
-        -mfloat-abi=soft
-        -mthumb
-        -ffreestanding
-        -masm-syntax-unified
-    >
-
     $<$<COMPILE_LANGUAGE:CXX>:
         -mcpu=cortex-m0plus
         -std=gnu++20
@@ -53,6 +34,7 @@ target_compile_options(${PROJECT_NAME} PRIVATE
         -fno-exceptions
         -fno-rtti
         -fno-use-cxa-atexit
+        -fno-common
         -Wall
         -Wextra
         -pedantic
