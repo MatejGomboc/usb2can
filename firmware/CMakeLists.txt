@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(motor_driver LANGUAGES ASM CXX)
+project(usb2can LANGUAGES ASM CXX)
 
 if(NOT CMAKE_BUILD_TYPE)
     message(FATAL_ERROR "Build type not set")
