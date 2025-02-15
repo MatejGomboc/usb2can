@@ -4,7 +4,7 @@
 
 namespace CortexM0Plus {
     //! the following values are saved into LR on exception entry
-    enum class LrExecepReturn : uint32_t {
+    enum class LrExceptionReturn : uint32_t {
         HANDLER = 0xFFFFFFF1, //!< return to handler mode, uses MSP after return
         THREAD_MSP = 0xFFFFFFF9, //!< return to thread mode, uses MSP after return
         THREAD_PSP = 0xFFFFFFFD //!< return to thread mode, uses PSP after return
@@ -83,105 +83,105 @@ namespace CortexM0Plus {
     static inline uint32_t getLr()
     {
         uint32_t value;
-        asm volatile("MOV %0, LR" : "=r" (value) : : );
+        asm volatile("MOV %0, LR" : "=r" (value) : : "cc");
         return value;
     }
 
     static inline Psr getApsrReg()
     {
         Psr psr;
-        asm volatile("MRS %0, APSR" : "=r" (psr.value) : : );
+        asm volatile("MRS %0, APSR" : "=r" (psr.value) : : "cc");
         return psr;
     }
 
     static inline Psr getIpsrReg()
     {
         Psr psr;
-        asm volatile("MRS %0, IPSR" : "=r" (psr.value) : : );
+        asm volatile("MRS %0, IPSR" : "=r" (psr.value) : : "cc");
         return psr;
     }
 
     static inline Psr getEpsrReg()
     {
         Psr psr;
-        asm volatile("MRS %0, EPSR" : "=r" (psr.value) : : );
+        asm volatile("MRS %0, EPSR" : "=r" (psr.value) : : "cc");
         return psr;
     }
 
     static inline Psr getIepsrReg()
     {
         Psr psr;
-        asm volatile("MRS %0, IEPSR" : "=r" (psr.value) : : );
+        asm volatile("MRS %0, IEPSR" : "=r" (psr.value) : : "cc");
         return psr;
     }
 
     static inline Psr getIapsrReg()
     {
         Psr psr;
-        asm volatile("MRS %0, IAPSR" : "=r" (psr.value) : : );
+        asm volatile("MRS %0, IAPSR" : "=r" (psr.value) : : "cc");
         return psr;
     }
 
     static inline Psr getEapsrReg()
     {
         Psr psr;
-        asm volatile("MRS %0, EAPSR" : "=r" (psr.value) : : );
+        asm volatile("MRS %0, EAPSR" : "=r" (psr.value) : : "cc");
         return psr;
     }
 
     static inline Psr getPsrReg()
     {
         Psr psr;
-        asm volatile("MRS %0, PSR" : "=r" (psr.value) : : );
+        asm volatile("MRS %0, PSR" : "=r" (psr.value) : : "cc");
         return psr;
     }
 
     static inline uint32_t getMspReg()
     {
         uint32_t value;
-        asm volatile("MRS %0, MSP" : "=r" (value) : : );
+        asm volatile("MRS %0, MSP" : "=r" (value) : : "cc");
         return value;
     }
 
     static inline void setMspReg(uint32_t value)
     {
-        asm volatile("MSR MSP, %0" : : "r" (value) : );
+        asm volatile("MSR MSP, %0" : : "r" (value) : "cc", "memory");
     }
 
     static inline uint32_t getPspReg()
     {
         uint32_t value;
-        asm volatile("MRS %0, PSP" : "=r" (value) : : );
+        asm volatile("MRS %0, PSP" : "=r" (value) : : "cc");
         return value;
     }
 
     static inline void setPspReg(uint32_t value)
     {
-        asm volatile("MSR PSP, %0" : : "r" (value) : );
+        asm volatile("MSR PSP, %0" : : "r" (value) : "cc", "memory");
     }
 
     static inline Primask getPrimaskReg()
     {
         Primask primask;
-        asm volatile("MRS %0, PRIMASK" : "=r" (primask.value) : : );
+        asm volatile("MRS %0, PRIMASK" : "=r" (primask.value) : : "cc");
         return primask;
     }
 
     static inline void setPrimaskReg(Primask primask)
     {
-        asm volatile("MSR PRIMASK, %0" : : "r" (primask.value) : "memory");
+        asm volatile("MSR PRIMASK, %0" : : "r" (primask.value) : "cc", "memory");
     }
 
     static inline Control getControlReg()
     {
         Control control;
-        asm volatile("MRS %0, CONTROL" : "=r" (control.value) : : );
+        asm volatile("MRS %0, CONTROL" : "=r" (control.value) : : "cc");
         return control;
     }
 
     static inline void setControlReg(Control control)
     {
-        asm volatile("MSR CONTROL, %0" : : "r" (control.value) : "memory");
+        asm volatile("MSR CONTROL, %0" : : "r" (control.value) : "cc", "memory");
         asm volatile("ISB" : : : "memory");
     }
 }
