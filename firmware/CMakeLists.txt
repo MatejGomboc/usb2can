@@ -82,6 +82,7 @@ target_link_options(${PROJECT_NAME} PRIVATE
     -Wl,-Map=${PROJECT_NAME}.map,--cref
     -nostdlib
     -Wl,--gc-sections
+    -Wl,--check-sections
     -static
     -Wl,--print-memory-usage
     -mfloat-abi=soft
