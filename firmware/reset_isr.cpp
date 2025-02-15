@@ -1,6 +1,6 @@
 #include <cstdint>
 
-static constexpr uint32_t STACK_FREE_SPACE_IDICATOR = 0xDEADDEAD;
+static constexpr uint32_t STACK_FREE_SPACE_INDICATOR = 0xDEADDEAD;
 
 extern uint32_t __DATA_START__;
 extern uint32_t __DATA_END__;
@@ -38,7 +38,7 @@ extern "C" void resetIsr()
 
     // overwrite the entire stack with free space indicator
     for (uint32_t* addr = &__GLOBAL_STACK_BOTTOM__; addr < &__GLOBAL_STACK_TOP__; addr++) {
-        *addr = STACK_FREE_SPACE_IDICATOR;
+        *addr = STACK_FREE_SPACE_INDICATOR;
     }
 
     // branch to main()
