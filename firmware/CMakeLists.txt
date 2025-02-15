@@ -67,7 +67,6 @@ target_link_options(${PROJECT_NAME} PRIVATE
     -T${PROJECT_SOURCE_DIR}/linker_script.ld
     -Wl,-Map=${PROJECT_NAME}.map,--cref
     -nostdlib
-    -Wl,--cref
     -Wl,--gc-sections
     -static
     -Wl,--print-memory-usage
