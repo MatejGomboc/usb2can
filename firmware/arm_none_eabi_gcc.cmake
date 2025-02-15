@@ -1,18 +1,11 @@
-# https://github.com/vpetrigo/arm-cmake-toolchains/tree/master
-
 set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_PROCESSOR ARM)
 
 set(TOOLCHAIN_PREFIX arm-none-eabi-)
-find_program(BINUTILS_PATH "${TOOLCHAIN_PREFIX}gcc" NO_CACHE)
-
-if (NOT BINUTILS_PATH)
-    message(FATAL_ERROR "arm-none-eabi-gcc toolchain not found")
-endif ()
+find_program(BINUTILS_PATH "${TOOLCHAIN_PREFIX}gcc" REQUIRED NO_CMAKE_FIND_ROOT_PATH)
 
 get_filename_component(ARM_TOOLCHAIN_DIR ${BINUTILS_PATH} DIRECTORY)
 
-# without this flag CMake is not able to pass test compilation check
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
 set(CMAKE_C_COMPILER "${TOOLCHAIN_PREFIX}gcc")
