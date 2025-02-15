@@ -81,7 +81,7 @@ namespace CortexM0Plus::Scb {
         struct Bits {
             uint32_t reserved0: 1;
             uint32_t sleep_on_isr_exit: 1; //!< enter sleep or deep sleep on return from ISR
-            uint32_t use_deep_sleep: 1; //! use deep sleep as low power mode
+            uint32_t use_deep_sleep: 1; //!< use deep sleep as low power mode
             uint32_t reserved1: 1;
 
             //! 0: only enabled exceptions or events can wakeup the processor, disabled exceptions are excluded
