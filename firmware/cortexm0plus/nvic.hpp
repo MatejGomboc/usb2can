@@ -33,6 +33,8 @@ namespace CortexM0Plus::Nvic {
     static inline void enableIrq(uint8_t irq_number)
     {
         Utils::setBit(registers()->iser, irq_number & 0x1F);
+        asm volatile("DSB" : : : "memory");
+        asm volatile("ISB" : : : "memory");
     }
 
     static inline void disableIrq(uint8_t irq_number)
@@ -50,6 +52,8 @@ namespace CortexM0Plus::Nvic {
     static inline void setPendingIrq(uint8_t irq_number)
     {
         Utils::setBit(registers()->ispr, irq_number & 0x1F);
+        asm volatile("DSB" : : : "memory");
+        asm volatile("ISB" : : : "memory");
     }
 
     static inline void clearPendingIrq(uint8_t irq_number)
