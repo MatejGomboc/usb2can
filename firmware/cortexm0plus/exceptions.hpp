@@ -7,6 +7,7 @@ namespace CortexM0Plus {
 
     enum class ExceptionNumber : uint8_t {
         THREAD_MODE = 0,
+        RESET = 1,
         NMI = 2,
         HARD_FAULT = 3,
         SVC_CALL = 11,
@@ -19,11 +20,15 @@ namespace CortexM0Plus {
     static inline void enableExceptions()
     {
         asm volatile("cpsie i" : : : "memory");
+        asm volatile("dsb" : : : "memory");
+        asm volatile("isb" : : : "memory");
     }
 
     static inline void disableExceptions()
     {
         asm volatile("cpsid i" : : : "memory");
+        asm volatile("dsb" : : : "memory");
+        asm volatile("isb" : : : "memory");
     }
 
     static inline bool isIrqNumber(ExceptionNumber exception)
