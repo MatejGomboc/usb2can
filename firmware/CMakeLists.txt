@@ -32,32 +32,46 @@ target_compile_options(${PROJECT_NAME} PRIVATE
     $<$<COMPILE_LANGUAGE:ASM>:
         -mcpu=cortex-m0plus
         -mthumb
+        -mfloat-abi=soft
+        -ffunction-sections
+        -fdata-sections
         -fstack-usage
         -Wmissing-include-dirs
         -masm-syntax-unified
     >
 
     $<$<COMPILE_LANGUAGE:CXX>:
+        # Architecture
         -mcpu=cortex-m0plus
-        -std=gnu++20
-        -ffunction-sections
-        -fdata-sections
+        -mthumb
+        -mfloat-abi=soft
+
+        # Language features
+        -std=gnu++17
+        -ffreestanding
+        -nostdlib
         -fno-exceptions
         -fno-rtti
         -fno-use-cxa-atexit
+        -fno-threadsafe-statics
         -fno-common
+        -fno-unwind-tables
+
+        # Optimization
+        -ffunction-sections
+        -fdata-sections
+        -fstack-usage
+
+        # Warnings
         -Wall
         -Wextra
         -pedantic
         -Wmissing-include-dirs
         -Wswitch-enum
         -Wconversion
-        -fstack-usage
-        -nostdlib
-        -mfloat-abi=soft
-        -mthumb
-        -ffreestanding
-        -fno-threadsafe-statics
+        -Wdouble-promotion
+
+        # Assembly
         -masm-syntax-unified
     >
 )
@@ -74,6 +88,7 @@ target_link_options(${PROJECT_NAME} PRIVATE
     -mthumb
 )
 
+# Print size report
 add_custom_target(${PROJECT_NAME}_size_report
     ALL
     WORKING_DIRECTORY "${PROJECT_BINARY_DIR}"
@@ -82,6 +97,7 @@ add_custom_target(${PROJECT_NAME}_size_report
     DEPENDS ${PROJECT_NAME}.elf
 )
 
+# Generate BIN file
 add_custom_target(${PROJECT_NAME}_bin
     ALL
     WORKING_DIRECTORY "${PROJECT_BINARY_DIR}"
@@ -91,6 +107,7 @@ add_custom_target(${PROJECT_NAME}_bin
     DEPENDS ${PROJECT_NAME}.elf
 )
 
+# Generate dissassebly file
 add_custom_target(${PROJECT_NAME}_asm
     ALL
     WORKING_DIRECTORY "${PROJECT_BINARY_DIR}"
