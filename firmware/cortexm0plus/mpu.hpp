@@ -81,17 +81,32 @@ namespace CortexM0Plus::Mpu {
         volatile uint32_t region_attributes; //!< region attributes register
     };
 
-    static inline Registers* registers()
+    static inline volatile Registers* registers()
     {
-        return reinterpret_cast<Registers*>(BASE_ADDR);
+        return reinterpret_cast<volatile Registers*>(BASE_ADDR);
     }
 
-    static inline void configureRegion(uint32_t idx, uint32_t base_addr, const RegionAttributes& attributes)
+    static inline bool configureRegion(uint32_t idx, uint32_t base_addr, const RegionAttributes& attributes)
     {
-        registers()->region_idx = idx;
-        registers()->region_base_address = (base_addr & 0x7FFFFFF) << 5;
+        // Check if base address is aligned according to region size
+        const uint32_t size = 1u << (attributes.bits.size_exp + 1);
+        if ((base_addr & (size - 1)) != 0) {
+            return false; // Address not properly aligned
+        }
+        
+        // Use the bit-field structure to maintain consistency with definitions
+        RegionBaseAddress addr;
+        addr.bits.region_idx = idx;
+        addr.bits.use_region_idx = 1; // Set VALID bit to update region index and address in one write
+        addr.bits.region_base_addr = base_addr >> 5;
+        
+        registers()->region_base_address = addr.value;
         registers()->region_attributes = attributes.value;
+        
+        // Memory barriers for proper synchronization
         asm volatile("DSB" : : : "memory");
         asm volatile("ISB" : : : "memory");
+        
+        return true;
     }
 }
