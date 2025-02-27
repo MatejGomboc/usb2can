@@ -86,11 +86,28 @@ namespace CortexM0Plus::Mpu {
         return reinterpret_cast<Registers*>(BASE_ADDR);
     }
 
+    /**
+     * Configure an MPU region with the specified parameters
+     * 
+     * @param idx Region index to configure (0-7 for typical Cortex-M0+ implementations)
+     * @param base_addr Base address of the memory region (must be aligned to the region size)
+     * @param attributes Region attributes including size, permissions, etc.
+     */
     static inline void configureRegion(uint32_t idx, uint32_t base_addr, const RegionAttributes& attributes)
     {
-        registers()->region_idx = idx;
-        registers()->region_base_address = (base_addr & 0x7FFFFFF) << 5;
+        // Use RegionBaseAddress union to correctly construct the register value
+        RegionBaseAddress rbar;
+        rbar.value = 0; // Start with a clean value
+        
+        rbar.bits.region_idx = idx & 0xF; // Region index (4 bits)
+        rbar.bits.use_region_idx = 1; // Set to use the region_idx field
+        rbar.bits.region_base_addr = base_addr >> 5; // Extract the top 27 bits of the address
+        
+        // Write to the registers atomically using the VALID bit (use_region_idx)
+        registers()->region_base_address = rbar.value;
         registers()->region_attributes = attributes.value;
+        
+        // Memory barriers to ensure MPU updates are complete before continuing
         asm volatile("DSB" : : : "memory");
         asm volatile("ISB" : : : "memory");
     }
