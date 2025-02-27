@@ -32,7 +32,7 @@ namespace CortexM0Plus::Mpu {
         struct Bits {
             uint32_t region_idx: 4; //!< index of the selected region
             uint32_t use_region_idx: 1; //!< use the value of region_idx field to select the region and also update value of region index register
-            uint32_t region_base_addr: 27; //!< base address of the selected region
+            uint32_t region_base_addr: 27; //!< base address of the selected region (must be aligned)
         } bits;
 
         uint32_t value = 0;
