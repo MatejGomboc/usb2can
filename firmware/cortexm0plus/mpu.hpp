@@ -81,9 +81,9 @@ namespace CortexM0Plus::Mpu {
         volatile uint32_t region_attributes; //!< region attributes register
     };
 
-    static inline Registers* registers()
+    static inline volatile Registers* registers()
     {
-        return reinterpret_cast<Registers*>(BASE_ADDR);
+        return reinterpret_cast<volatile Registers*>(BASE_ADDR);
     }
 
     /**
@@ -92,23 +92,29 @@ namespace CortexM0Plus::Mpu {
      * @param idx Region index to configure (0-7 for typical Cortex-M0+ implementations)
      * @param base_addr Base address of the memory region (must be aligned to the region size)
      * @param attributes Region attributes including size, permissions, etc.
+     * @return true if configuration was successful, false if alignment check failed
      */
-    static inline void configureRegion(uint32_t idx, uint32_t base_addr, const RegionAttributes& attributes)
+    static inline bool configureRegion(uint32_t idx, uint32_t base_addr, const RegionAttributes& attributes)
     {
-        // Use RegionBaseAddress union to correctly construct the register value
-        RegionBaseAddress rbar;
-        rbar.value = 0; // Start with a clean value
+        // Check if base address is aligned according to region size
+        const uint32_t size = 1u << (attributes.bits.size_exp + 1);
+        if ((base_addr & (size - 1)) != 0) {
+            return false; // Address not properly aligned
+        }
         
-        rbar.bits.region_idx = idx & 0xF; // Region index (4 bits)
-        rbar.bits.use_region_idx = 1; // Set to use the region_idx field
-        rbar.bits.region_base_addr = base_addr >> 5; // Extract the top 27 bits of the address
+        // Use the bit-field structure to maintain consistency with definitions
+        RegionBaseAddress addr;
+        addr.bits.region_idx = idx;
+        addr.bits.use_region_idx = 1; // Set VALID bit to update region index and address in one write
+        addr.bits.region_base_addr = base_addr >> 5;
         
-        // Write to the registers atomically using the VALID bit (use_region_idx)
-        registers()->region_base_address = rbar.value;
+        registers()->region_base_address = addr.value;
         registers()->region_attributes = attributes.value;
         
-        // Memory barriers to ensure MPU updates are complete before continuing
+        // Memory barriers for proper synchronization
         asm volatile("DSB" : : : "memory");
         asm volatile("ISB" : : : "memory");
+        
+        return true;
     }
 }
