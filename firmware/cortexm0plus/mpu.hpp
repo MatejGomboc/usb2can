@@ -81,16 +81,21 @@ namespace CortexM0Plus::Mpu {
         volatile uint32_t region_attributes; //!< region attributes register
     };
 
-    static inline Registers* registers()
+    static inline volatile Registers* registers()
     {
-        return reinterpret_cast<Registers*>(BASE_ADDR);
+        return reinterpret_cast<volatile Registers*>(BASE_ADDR);
     }
 
     static inline void configureRegion(uint32_t idx, uint32_t base_addr, const RegionAttributes& attributes)
     {
         registers()->region_idx = idx;
-        registers()->region_base_address = (base_addr & 0x7FFFFFF) << 5;
+
+        RegionBaseAddress base_addr_reg;
+        base_addr_reg.bits.region_base_addr = base_addr;
+        registers()->region_base_address = base_addr_reg.value;
+
         registers()->region_attributes = attributes.value;
+
         asm volatile("DSB" : : : "memory");
         asm volatile("ISB" : : : "memory");
     }
