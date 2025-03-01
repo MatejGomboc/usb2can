@@ -20,9 +20,9 @@ namespace CortexM0Plus::Nvic {
         volatile uint32_t ipr[8]; //!< sets priorities of interrupts
     };
 
-    static inline Registers* registers()
+    static inline volatile Registers* registers()
     {
-        return reinterpret_cast<Registers*>(BASE_ADDR);
+        return reinterpret_cast<volatile Registers*>(BASE_ADDR);
     }
 
     static inline bool isIrqEnabled(uint8_t irq_number)
@@ -59,6 +59,8 @@ namespace CortexM0Plus::Nvic {
     static inline void clearPendingIrq(uint8_t irq_number)
     {
         Utils::setBit(registers()->icpr, irq_number & 0x1F);
+        asm volatile("DSB" : : : "memory");
+        asm volatile("ISB" : : : "memory");
     }
 
     static inline void setIrqPriority(uint8_t irq_number, uint8_t irq_priority)

@@ -169,9 +169,9 @@ namespace CortexM0Plus::Scb {
         volatile uint32_t shpr3; //!< sets the priority level of the exception handlers that have configurable priority (PendSV, SysTick)
     };
 
-    static inline Registers* registers()
+    static inline volatile Registers* registers()
     {
-        return reinterpret_cast<Registers*>(BASE_ADDR);
+        return reinterpret_cast<volatile Registers*>(BASE_ADDR);
     }
 
     __attribute__((noreturn)) static inline void systemReset()

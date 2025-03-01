@@ -61,8 +61,8 @@ namespace CortexM0Plus::SysTick {
         volatile uint32_t calibration; //!< controls timer calibration
     };
 
-    static inline Registers* registers()
+    static inline volatile Registers* registers()
     {
-        return reinterpret_cast<Registers*>(BASE_ADDR);
+        return reinterpret_cast<volatile Registers*>(BASE_ADDR);
     }
 }
