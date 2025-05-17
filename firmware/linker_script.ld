@@ -14,7 +14,7 @@ SECTIONS {
     __GLOBAL_STACK_SIZE__ = LENGTH(RAM) - SIZEOF(.data) - SIZEOF(.bss);
     __GLOBAL_STACK_TOP__ = ORIGIN(RAM) + LENGTH(RAM);
 
-    ASSERT(__GLOBAL_STACK_SIZE__ > 0, "Error: No space left for stack!")
+    ASSERT(__GLOBAL_STACK_SIZE__ > 0, "Error: No space remaining for stack!")
 
     __PROCESS_STACK_BOTTOM__ = __GLOBAL_STACK_BOTTOM__;
     __PROCESS_STACK_SIZE__ = DEFINED(__PROCESS_STACK_SIZE__) ? __PROCESS_STACK_SIZE__ : 0;
