@@ -1,3 +1,6 @@
 [submodule "hardware/altium-library"]
 	path = hardware/altium-library
 	url = https://github.com/MatejGomboc/altium-library.git
+[submodule "firmware/ARMCortexM"]
+	path = firmware/ARMCortexM
+	url = https://github.com/MatejGomboc/ARMCortexM-CppLib.git
