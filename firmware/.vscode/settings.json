@@ -10,6 +10,7 @@
         "CMSIS",
         "cortexm0plus",
         "Gomboc",
+        "isrs",
         "licence",
         "licences",
         "Matej",
