@@ -45,5 +45,8 @@
     "editor.trimAutoWhitespace": true,
     "files.trimTrailingWhitespace": true,
     "files.insertFinalNewline": true,
-    "editor.renderWhitespace": "boundary"
+    "editor.renderWhitespace": "boundary",
+    "[markdown]": {
+        "files.trimTrailingWhitespace": false
+    }
 }
