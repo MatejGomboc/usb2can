@@ -1,0 +1,71 @@
+{
+    "version": 3,
+    "configurePresets": [
+        {
+            "name": "Debug",
+            "displayName": "ARM GCC Debug",
+            "description": "Debug build using ARM GCC toolchain (enforced)",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build-debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+            }
+        },
+        {
+            "name": "MinSizeRel",
+            "displayName": "ARM GCC MinSizeRel",
+            "description": "Minimum size release build using ARM GCC toolchain (enforced)",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build-minsizerel",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "MinSizeRel",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+            }
+        },
+        {
+            "name": "Release",
+            "displayName": "ARM GCC Release",
+            "description": "Release build using ARM GCC toolchain (enforced)",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build-release",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+            }
+        },
+        {
+            "name": "RelWithDebInfo",
+            "displayName": "ARM GCC RelWithDebInfo",
+            "description": "Release with debug info build using ARM GCC toolchain (enforced)",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build-relwithdebinfo",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "Debug",
+            "displayName": "Build Debug",
+            "configurePreset": "Debug"
+        },
+        {
+            "name": "MinSizeRel",
+            "displayName": "Build MinSizeRel",
+            "configurePreset": "MinSizeRel"
+        },
+        {
+            "name": "Release",
+            "displayName": "Build Release",
+            "configurePreset": "Release"
+        },
+        {
+            "name": "RelWithDebInfo",
+            "displayName": "Build RelWithDebInfo",
+            "configurePreset": "RelWithDebInfo"
+        }
+    ]
+}
