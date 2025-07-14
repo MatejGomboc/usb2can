@@ -12,22 +12,10 @@
                 "interface/stlink.cfg",
                 "target/stm32g0x.cfg"
             ],
-            "searchDir": [],
-            "runToEntryPoint": "main",
             "showDevDebugOutput": "none",
-            "svdFile": "${workspaceFolder}/STM32G0C1.svd",
-            "interface": "swd"
-        },
-        {
-            "name": "stutil",
-            "type": "cortex-debug",
-            "request": "launch",
-            "servertype": "stutil",
-            "cwd": "${workspaceFolder}",
-            "executable": "../firmware-build-debug/usb2can.elf",
-            "device": "STM32G0C1",
-            "v1": false,
-            "svdFile": "${workspaceFolder}/STM32G0C1.svd"
+            "svdFile": "STM32G0C1.svd",
+            "interface": "swd",
+            "breakAfterReset": true
         }
     ]
 }
