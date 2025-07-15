@@ -2,8 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "cwd": "${workspaceRoot}",
-            "executable": "../firmware-build-debug/usb2can.elf",
+            "executable": "firmware-build/debug/usb2can.elf",
             "name": "OpenOCD",
             "request": "launch",
             "type": "cortex-debug",
