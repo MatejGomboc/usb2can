@@ -7,7 +7,8 @@
             "binaryDir": "${sourceDir}/firmware-build/debug",
             "toolchainFile": "${sourceDir}/ARMCortexM/arm_none_eabi_gcc.cmake",
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug"
+                "CMAKE_BUILD_TYPE": "Debug",
+                "ARM_CORTEX_M_ARCH": "0+"
             }
         },
         {
@@ -16,7 +17,8 @@
             "binaryDir": "${sourceDir}/firmware-build/minsizerel",
             "toolchainFile": "${sourceDir}/ARMCortexM/arm_none_eabi_gcc.cmake",
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "MinSizeRel"
+                "CMAKE_BUILD_TYPE": "MinSizeRel",
+                "ARM_CORTEX_M_ARCH": "0+"
             }
         },
         {
@@ -25,7 +27,8 @@
             "binaryDir": "${sourceDir}/firmware-build/release",
             "toolchainFile": "${sourceDir}/ARMCortexM/arm_none_eabi_gcc.cmake",
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Release"
+                "CMAKE_BUILD_TYPE": "Release",
+                "ARM_CORTEX_M_ARCH": "0+"
             }
         },
         {
@@ -34,7 +37,8 @@
             "binaryDir": "${sourceDir}/firmware-build/relwithdebinfo",
             "toolchainFile": "${sourceDir}/ARMCortexM/arm_none_eabi_gcc.cmake",
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+                "ARM_CORTEX_M_ARCH": "0+"
             }
         }
     ],

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16...3.31.6)
+cmake_minimum_required(VERSION 3.13)
 
 project(usb2can
     LANGUAGES ASM CXX
@@ -18,6 +18,7 @@ if(NOT CMAKE_BUILD_TYPE IN_LIST SUPPORTED_BUILD_TYPES)
 endif()
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(ARM_CORTEX_M_ARCH "0+")
 
 add_subdirectory(ARMCortexM)
 
@@ -36,24 +37,14 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 
 target_compile_options(${PROJECT_NAME} PRIVATE
     $<$<COMPILE_LANGUAGE:ASM>:
-        -mcpu=cortex-m0plus
-        -mthumb
-        -mfloat-abi=soft
         -ffunction-sections
         -fdata-sections
         -fstack-usage
         -Wmissing-include-dirs
-        -masm-syntax-unified
     >
 
     $<$<COMPILE_LANGUAGE:CXX>:
-        # Architecture
-        -mcpu=cortex-m0plus
-        -mthumb
-        -mfloat-abi=soft
-
         # Language features
-        -std=gnu++17
         -ffreestanding
         -nostdlib
         -fno-exceptions
@@ -76,14 +67,10 @@ target_compile_options(${PROJECT_NAME} PRIVATE
         -Wswitch-enum
         -Wconversion
         -Wdouble-promotion
-
-        # Assembly
-        -masm-syntax-unified
     >
 )
 
 target_link_options(${PROJECT_NAME} PRIVATE
-    -mcpu=cortex-m0plus
     -T${PROJECT_SOURCE_DIR}/linker_script.ld
     -Wl,-Map=${PROJECT_NAME}.map,--cref
     -nostdlib
@@ -91,8 +78,6 @@ target_link_options(${PROJECT_NAME} PRIVATE
     -Wl,--check-sections
     -static
     -Wl,--print-memory-usage
-    -mfloat-abi=soft
-    -mthumb
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
