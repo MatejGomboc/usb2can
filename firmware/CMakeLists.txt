@@ -103,30 +103,27 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 # Print size report
 add_custom_target(${PROJECT_NAME}_size_report
     ALL
-    WORKING_DIRECTORY "${PROJECT_BINARY_DIR}"
-    COMMAND "${CMAKE_SIZE}" -A ${PROJECT_NAME}.elf
+    COMMAND "${CMAKE_SIZE}" -A $<TARGET_FILE:${PROJECT_NAME}>
     VERBATIM
-    DEPENDS ${PROJECT_NAME}.elf
+    DEPENDS ${PROJECT_NAME}
 )
 
 # Generate BIN file
 add_custom_target(${PROJECT_NAME}_bin
     ALL
-    WORKING_DIRECTORY "${PROJECT_BINARY_DIR}"
-    COMMAND "${CMAKE_OBJCOPY}" --gap-fill 0 -O binary -S ${PROJECT_NAME}.elf ${PROJECT_NAME}.bin
-    BYPRODUCTS ${PROJECT_NAME}.bin
+    COMMAND "${CMAKE_OBJCOPY}" --gap-fill 0 -O binary -S $<TARGET_FILE:${PROJECT_NAME}> $<TARGET_FILE_DIR:${PROJECT_NAME}>/${PROJECT_NAME}.bin
+    BYPRODUCTS $<TARGET_FILE_DIR:${PROJECT_NAME}>/${PROJECT_NAME}.bin
     VERBATIM
-    DEPENDS ${PROJECT_NAME}.elf
+    DEPENDS ${PROJECT_NAME}
 )
 
-# Generate dissassebly file
+# Generate disassembly file
 add_custom_target(${PROJECT_NAME}_asm
     ALL
-    WORKING_DIRECTORY "${PROJECT_BINARY_DIR}"
-    COMMAND "${CMAKE_OBJDUMP}" -S -d -l -C -z ${PROJECT_NAME}.elf > ${PROJECT_NAME}.asm
-    BYPRODUCTS ${PROJECT_NAME}.asm
+    COMMAND "${CMAKE_OBJDUMP}" -S -d -l -C -z $<TARGET_FILE:${PROJECT_NAME}> > $<TARGET_FILE_DIR:${PROJECT_NAME}>/${PROJECT_NAME}.asm
+    BYPRODUCTS $<TARGET_FILE_DIR:${PROJECT_NAME}>/${PROJECT_NAME}.asm
     VERBATIM
-    DEPENDS ${PROJECT_NAME}.elf
+    DEPENDS ${PROJECT_NAME}
 )
 
 add_dependencies(
