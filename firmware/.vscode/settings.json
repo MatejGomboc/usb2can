@@ -8,5 +8,6 @@
     "editor.renderWhitespace": "boundary",
     "[markdown]": {
         "files.trimTrailingWhitespace": false
-    }
+    },
+    "cmake.configureOnOpen": false
 }
