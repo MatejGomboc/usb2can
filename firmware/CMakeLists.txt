@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.20)
 
 project(usb2can
     LANGUAGES ASM CXX
@@ -101,11 +101,28 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     ARMCortexM
 )
 
-# Post-build: print size report, generate BIN and disassembly files
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+# Print size report
+add_custom_target(${PROJECT_NAME}_size_report
+    ALL
     COMMAND "${CMAKE_SIZE}" -A $<TARGET_FILE:${PROJECT_NAME}>
-    COMMAND "${CMAKE_OBJCOPY}" --gap-fill 0 -O binary -S $<TARGET_FILE:${PROJECT_NAME}> $<TARGET_FILE_DIR:${PROJECT_NAME}>/${PROJECT_NAME}.bin
-    COMMAND "${CMAKE_OBJDUMP}" -S -d -l -C -z $<TARGET_FILE:${PROJECT_NAME}> > $<TARGET_FILE_DIR:${PROJECT_NAME}>/${PROJECT_NAME}.asm
-    COMMENT "Generating size report, BIN and disassembly files"
     VERBATIM
+    DEPENDS $<TARGET_FILE:${PROJECT_NAME}>
+)
+
+# Generate BIN file
+add_custom_target(${PROJECT_NAME}_bin
+    ALL
+    COMMAND "${CMAKE_OBJCOPY}" --gap-fill 0 -O binary -S $<TARGET_FILE:${PROJECT_NAME}> $<TARGET_FILE_DIR:${PROJECT_NAME}>/${PROJECT_NAME}.bin
+    BYPRODUCTS $<TARGET_FILE_DIR:${PROJECT_NAME}>/${PROJECT_NAME}.bin
+    VERBATIM
+    DEPENDS $<TARGET_FILE:${PROJECT_NAME}>
+)
+
+# Generate disassembly file
+add_custom_target(${PROJECT_NAME}_asm
+    ALL
+    COMMAND "${CMAKE_OBJDUMP}" -S -d -l -C -z $<TARGET_FILE:${PROJECT_NAME}> > $<TARGET_FILE_DIR:${PROJECT_NAME}>/${PROJECT_NAME}.asm
+    BYPRODUCTS $<TARGET_FILE_DIR:${PROJECT_NAME}>/${PROJECT_NAME}.asm
+    VERBATIM
+    DEPENDS $<TARGET_FILE:${PROJECT_NAME}>
 )
