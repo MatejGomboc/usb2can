@@ -7,18 +7,34 @@ project(usb2can
     HOMEPAGE_URL "https://github.com/MatejGomboc/usb2can"
 )
 
-if(NOT CMAKE_BUILD_TYPE)
-    message(FATAL_ERROR "Build type not set")
-endif()
+get_property(IS_MULTI_CONFIG GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
 
-set(SUPPORTED_BUILD_TYPES Debug Release RelWithDebInfo MinSizeRel)
+set(SUPPORTED_BUILD_TYPES
+    Debug
+    MinSize
+    MaxSpeed
+)
 
-if(NOT CMAKE_BUILD_TYPE IN_LIST SUPPORTED_BUILD_TYPES)
-    message(FATAL_ERROR "Unsupported build type: ${CMAKE_BUILD_TYPE}")
+set(CMAKE_CXX_FLAGS_DEBUG "-Og -g")
+set(CMAKE_CXX_FLAGS_MINSIZE "-Os")
+set(CMAKE_CXX_FLAGS_MAXSPEED "-O3")
+
+if(IS_MULTI_CONFIG)
+    set(CMAKE_CONFIGURATION_TYPES "${SUPPORTED_BUILD_TYPES}" CACHE STRING "" FORCE)
+    set(CMAKE_DEFAULT_BUILD_TYPE "MinSize" CACHE STRING "" FORCE)
+
+else()
+    if(NOT CMAKE_BUILD_TYPE)
+        message(FATAL_ERROR "CMake build type not set")
+    endif()
+
+    if(NOT CMAKE_BUILD_TYPE IN_LIST SUPPORTED_BUILD_TYPES)
+        message(FATAL_ERROR "Unsupported CMake build type: ${CMAKE_BUILD_TYPE}")
+    endif()
 endif()
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(ARM_CORTEX_M_ARCH "0+")
+set(ARM_CORTEX_M_ARCH "M0PLUS")
 
 add_subdirectory(ARMCortexM)
 
@@ -29,7 +45,7 @@ add_executable(${PROJECT_NAME}
     fault_isrs.cpp
 )
 
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 
 target_include_directories(${PROJECT_NAME} PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}"
