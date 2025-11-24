@@ -19,6 +19,8 @@
         "redhat.vscode-yaml",
         "trond-snekvik.gnu-mapfiles",
         "xaver.clang-format",
-        "zixuanwang.linkerscript"
+        "zixuanwang.linkerscript",
+        "Gruntfuggly.todo-tree",
+        "usernamehw.errorlens"
     ]
 }
