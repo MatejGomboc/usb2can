@@ -34,6 +34,7 @@ else()
 endif()
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_EXECUTABLE_SUFFIX ".elf")
 set(ARM_CORTEX_M_ARCH "M0PLUS")
 
 add_subdirectory(ARMCortexM)
