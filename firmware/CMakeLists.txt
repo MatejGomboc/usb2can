@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.20)
 
 project(usb2can
     LANGUAGES ASM CXX
@@ -125,11 +125,4 @@ add_custom_target(${PROJECT_NAME}_asm
     BYPRODUCTS $<TARGET_FILE_DIR:${PROJECT_NAME}>/${PROJECT_NAME}.asm
     VERBATIM
     DEPENDS $<TARGET_FILE:${PROJECT_NAME}>
-)
-
-add_dependencies(
-    ${PROJECT_NAME}_size_report
-    ${PROJECT_NAME}_bin
-    ${PROJECT_NAME}_asm
-    ${PROJECT_NAME}
 )
