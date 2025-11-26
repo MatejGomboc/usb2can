@@ -107,7 +107,7 @@ add_custom_target(${PROJECT_NAME}_size_report
     WORKING_DIRECTORY "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
     COMMAND "${CMAKE_SIZE}" -A ${PROJECT_NAME}.elf
     VERBATIM
-    DEPENDS ${PROJECT_NAME}.elf
+    DEPENDS ${PROJECT_NAME}
 )
 
 # Generate BIN file
@@ -117,7 +117,7 @@ add_custom_target(${PROJECT_NAME}_bin
     COMMAND "${CMAKE_OBJCOPY}" --gap-fill 0 -O binary -S ${PROJECT_NAME}.elf ${PROJECT_NAME}.bin
     BYPRODUCTS ${PROJECT_NAME}.bin
     VERBATIM
-    DEPENDS ${PROJECT_NAME}.elf
+    DEPENDS ${PROJECT_NAME}
 )
 
 # Generate dissassebly file
@@ -127,12 +127,5 @@ add_custom_target(${PROJECT_NAME}_asm
     COMMAND "${CMAKE_OBJDUMP}" -S -d -l -C -z ${PROJECT_NAME}.elf > ${PROJECT_NAME}.asm
     BYPRODUCTS ${PROJECT_NAME}.asm
     VERBATIM
-    DEPENDS ${PROJECT_NAME}.elf
-)
-
-add_dependencies(
-    ${PROJECT_NAME}_size_report
-    ${PROJECT_NAME}_bin
-    ${PROJECT_NAME}_asm
-    ${PROJECT_NAME}
+    DEPENDS ${PROJECT_NAME}
 )
